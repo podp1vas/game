@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гра: В кого більше число</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .game-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .player-info, .computer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-label, .computer-label {
+            padding: 6px 15px;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .player-label {
+            background-color: #2196F3;
+        }
+
+        .computer-label {
+            background-color: #4CAF50;
+        }
+
+        .number-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: #FFEB3B;
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #333;
+        }
+
+        #generateBtn {
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .score-info {
+            font-size: 18px;
+            color: #555;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        @media (max-width: 360px) {
+            .number-circle {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+
+            #generateBtn {
+                font-size: 16px;
+                padding: 10px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h2>Гра: В кого більше число</h2>
+
+    <div class="game-area">
+        <div class="player-info">
+            <div class="player-label" id="playerLabel">Гравець</div>
+            <div class="number-circle" id="playerNumber">0</div>
+        </div>
+
+        <button id="generateBtn">Generate</button>
+
+        <div class="computer-info">
+            <div class="computer-label">Комп'ютер</div>
+            <div class="number-circle" id="computerNumber">0</div>
+        </div>
+    </div>
+
+    <div class="score-info">
+        <p id="scoreDisplay"></p>
+        <p id="roundDisplay"></p>
+    </div>
+</div>
+
+<script>
+    let name = "";
+    while (!name) {
+        name = prompt("Введіть ваше ім'я:");
+        if (name === null) name = "";
+    }
+
+    document.getElementById("playerLabel").textContent = name;
+
+    let playerScore = 0;
+    let compScore = 0;
+    let round = 1;
+
+    document.getElementById("scoreDisplay").textContent = `${name}: ${playerScore} — Комп'ютер: ${compScore}`;
+    document.getElementById("roundDisplay").textContent = `Раунд: ${round}`;
+
+    document.getElementById("generateBtn").onclick = function () {
+
+        let playerNum = Math.floor(Math.random() * 10) + 1;
+        let compNum = Math.floor(Math.random() * 10) + 1;
+
+        document.getElementById("playerNumber").textContent = playerNum;
+        document.getElementById("computerNumber").textContent = compNum;
+
+        let result = "";
+        if (playerNum > compNum) {
+            playerScore++;
+            result = "Твій бал!";
+        } else if (playerNum < compNum) {
+            compScore++;
+            result = "Бал комп'ютеру!";
+        } else {
+            result = "Нічия!";
+        }
+
+        document.getElementById("scoreDisplay").textContent = `${name}: ${playerScore} — Комп'ютер: ${compScore}`;
+
+        setTimeout(() => {
+            alert(`${name}: ${playerNum}\nКомп'ютер: ${compNum}\n\n${result}`);
+            round++;
+            document.getElementById("roundDisplay").textContent = `Раунд: ${round}`;
+
+            if (playerScore === 3) {
+                alert(`🎉 Переміг гравець: ${name}!`);
+                location.reload();
+            } else if (compScore === 3) {
+                alert("😢 Переміг комп'ютер!");
+                location.reload();
+            }
+        }, 200);
+    };
+</script>
+
+</body>
+</html>
